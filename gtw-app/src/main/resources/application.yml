@@ -1,0 +1,52 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: gtw-app
+  security:
+    oauth2:
+      client:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/my-realm/protocol/openid-connect/certs
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_LAST
+        - AddResponseHeader=Access-Control-Allow-Origin, *
+      routes:
+        - id: auth
+          uri: http://localhost:8080/realms/my-realm/protocol/openid-connect/token
+          predicates:
+            - Path=/openid-connect/**
+          filters:
+            - RewritePath=/openid-connect,/realms/my-realm/protocol/openid-connect
+
+        - id: login-app
+          uri: http://localhost:8087
+          predicates:
+            - Path=/login/**
+          filters:
+            - RewritePath=/login, /
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: my-realm
+  client: gateway-client
+  client-secret: yY5msX6y0i0vFxL92gm37tBPolyJemwg
+  username: admin
+  password: admin
+  auth-path: /realms/my-realm/protocol/openid-connect/token

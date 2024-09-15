@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal page</title>
+</head>
+<body>
+
+<p th:text="${person.getFullName()}">Full name</p>
+<p th:text="${person.getYearOfBirth()}">Date of Birth</p></body>
+</br>
+<a th:href="@{/people/{id}/edit(id = ${person.getId()})}">Edit user</a>
+</br>
+<form th:method="DELETE" th:action="@{/people/{id}(id = ${person.getId()})}">
+    <input type="submit" value="Delete user">
+</form>
+<br><hr>
+
+<div th:if="${not books.isEmpty()}" >
+    Books:
+    <tr th:each="book : ${books}">
+
+    <a th:href="@{/book/{id}(id = ${book.getId()})}"
+       th:style="${book.isExpired()} ? 'color:red' : 'color:green'" th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getCreationDate()}">
+        Name of the book
+    </a>
+        <td th:if="${book.isExpired()}" th:text="' - The book has already expired ' + ${book.expirationDate}">
+        </td>
+
+        <td th:unless="${book.isExpired()}" th:text="' - The book will expire on ' + ${book.expirationDate}"></td>
+
+        <br>
+
+    </tr>
+</div>
+
+<div th:if="${books.isEmpty()}" >
+    This user hasn't picked up any books yet
+</div>
+
+<br>
+<a href="/people">Go back to main page</a>
+</html>

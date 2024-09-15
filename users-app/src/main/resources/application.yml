@@ -1,0 +1,31 @@
+spring:
+  thymeleaf:
+    mode: HTML
+    prefix: classpath:/templates/
+    encoding: UTF-8
+    cache: false
+  application:
+    name: users-app
+  sql:
+    init:
+      mode: never
+  datasource:
+    username: login
+    password: login
+    url: jdbc:postgresql://localhost:5438/login-db
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+
+
+server:
+  port: 8088
+
+eureka:
+  client:
+    service-url-defaultZone: http://localhost:8761/eureka

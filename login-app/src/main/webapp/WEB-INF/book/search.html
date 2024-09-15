@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+
+    <form th:method="POST" th:action="@{/book/search}">
+        <label for="queue">Enter book title</label>
+        <input type="text" id="queue" name="queue">
+    </form>
+    <br>
+    <hr>
+
+
+    <tr th:each="book : ${books}">
+
+        <div>
+            <a th:text="${book.getTitle()} + ', ' + ${book.getAuthor()}" th:href="@{/book/{id}(id = ${book.getId()})}">Book title</a>
+            <br>
+
+            <div th:if="${book.getOwner() != null}">
+            <td th:text="'Books now has ' + ${book.getOwner().getFullName()}"></td>
+            </div>
+
+            <div th:if="${book.getOwner() == null}">
+                <td th:text="'The book is now owned by no one'"></td>
+            </div>
+
+            <br>
+
+        </div>
+
+    </tr>
+
+    <div th:if="${emptyInput}">Enter the title of the book or author in whole or in part</div>
+        <div th:if="${books.isEmpty() && !emptyInput}" th:text="'Books upon request \'' + ${queue} + '\' not found'"/>
+
+    <br>
+
+    <a href="/book">Go back to main page</a>
+
+</form>
+</body>
+</html>

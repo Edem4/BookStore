@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter information about you</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/people}" th:object="${person}">
+
+  <label for="FullName">Please enter a name in the format: Surname Name Patronymic
+    (Patronymic is optional)</label>
+  <input type="text" th:field="*{fullName}" id="FullName">
+  <div style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name Error</div>
+    </br>
+
+  <label for="yearOfBirth">Enter your year of birth</label>
+  <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth">
+  <div style="color: red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Date Error</div>
+    <br>
+
+    <input type="submit" value="Submit"/>
+</form>
+</body>
+</html>

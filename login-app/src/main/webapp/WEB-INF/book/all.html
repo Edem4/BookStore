@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All books</title>
+</head>
+<body>
+
+<div th:each="book : ${books}">
+    <a th:text="${book.getTitle()}" th:href="@{/book/{id}(id = ${book.getId()})}">BookInfo</a>
+</div>
+
+</br>
+
+<div th:if="${books.isEmpty()}">There are no more books</div>
+
+<!--/*Without sort*/-->
+<div th:if="${page != null && booksPerPage != null && sort == false}">
+    <a th:if="${books.size() == 6}" th:href="@{/book(page=${page + 1},  books_per_page=${booksPerPage})}">Next page</a>
+    <br>
+    <a th:if="${page > 0}" th:href="@{/book(page=${page - 1},  books_per_page=${booksPerPage})}">Previous page</a>
+</div>
+
+<!-- With Sort -->
+<div th:if="${page != null && booksPerPage != null && sort == true}">
+    <a th:if="${books.size() == 6}" th:href="@{/book(page=${page + 1},  books_per_page=${booksPerPage}, sort_by_year = true)}">Next page</a>
+    <br>
+    <a th:if="${page > 0}" th:href="@{/book(page=${page - 1},  books_per_page=${booksPerPage}, sort_by_year = true)}">Previous page</a>
+</div>
+
+
+<hr>
+<a href="/book/search">Book search</a>
+<br>
+<div th:if="${sort != true}">
+    <a href="/book/?sort_by_year=true">Sort by year of publication</a>
+</div>
+<div th:if="${sort == true}">
+    <a href="/book/">Cancel sorting by year of publication</a>
+</div>
+<br>
+<br>
+<a href="/book/new">Add new book</a>
+<br>
+<a href="/">To Home Page</a>
+</body>
+</html>
